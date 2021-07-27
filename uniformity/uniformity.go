@@ -34,6 +34,11 @@ func UniformityTest(data *[]float64) {
 	t.AppendSeparator()
 
 	// 3. Hegazy-Green test for the hypothesis of uniformity
+	testStatistics, P_value = HegazyGreen(data)
+	doTest("Hegazy-Green test", testStatistics, P_value, 0.05)
+	t.AppendSeparator()
+
+	// 4. Kolmogorov-Smirnov test for the hypothesis of uniformity
 
 	var resultColor text.Colors = text.Colors{text.FgHiRed}
 	resultPassFail := "FAIL"
