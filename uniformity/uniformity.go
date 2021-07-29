@@ -65,6 +65,9 @@ func UniformityTest(unSortedData *[]float64) {
 	t.AppendSeparator()
 
 	// 8. Sarkadi-Kosik test for the hypothesis of uniformity
+	testStatistics, P_value = SarkadiKosik(&sortedData)
+	doTest("Sarkadi-Kosik test", testStatistics, P_value, 0.05)
+	t.AppendSeparator()
 
 	var resultColor text.Colors = text.Colors{text.FgHiRed}
 	resultPassFail := "FAIL"
