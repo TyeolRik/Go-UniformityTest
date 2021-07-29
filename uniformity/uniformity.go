@@ -16,29 +16,49 @@ var PassFail string = "PASS"
 
 var t table.Writer
 
-func UniformityTest(data *[]float64) {
-	sort.Float64s(*data)
+func UniformityTest(unSortedData *[]float64) {
+	sortedData := make([]float64, len(*unSortedData))
+	copy(sortedData, *unSortedData)
+	sort.Float64s(sortedData)
 
 	t = table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"#", "Test Name", "Test Statistics", "P-value", "Pass or Fail"})
 
 	// 1. Dudewicz-van der Meulen test
-	testStatistics, P_value = DudewiczVanDerMeulen(data)
+	testStatistics, P_value = DudewiczVanDerMeulen(&sortedData)
 	doTest("Dudewicz-van der Meulen test", testStatistics, P_value, 0.05)
 	t.AppendSeparator()
 
 	// 2. Frosini test for the hypothesis of uniformity
-	testStatistics, P_value = Frosini(data)
+	testStatistics, P_value = Frosini(&sortedData)
 	doTest("Frosini test", testStatistics, P_value, 0.05)
 	t.AppendSeparator()
 
 	// 3. Hegazy-Green test for the hypothesis of uniformity
-	testStatistics, P_value = HegazyGreen(data)
+	testStatistics, P_value = HegazyGreen(&sortedData)
 	doTest("Hegazy-Green test", testStatistics, P_value, 0.05)
 	t.AppendSeparator()
 
 	// 4. Kolmogorov-Smirnov test for the hypothesis of uniformity
+	//testStatistics, P_value = KolmogorovSmirnov(unSortedData, 2000, -1)
+	//doTest("Kolmogorov-Smirnov test (k = -1)", testStatistics, P_value, 0.05)
+	testStatistics, P_value = KolmogorovSmirnov(unSortedData, 2000, 0)
+	doTest("Kolmogorov-Smirnov test (k =  0)", testStatistics, P_value, 0.05)
+	//testStatistics, P_value = KolmogorovSmirnov(unSortedData, 2000, 1)
+	//doTest("Kolmogorov-Smirnov test (k = +1)", testStatistics, P_value, 0.05)
+	t.AppendSeparator()
+
+	// 5. Kuiper test for the hypothesis of uniformity
+	testStatistics, P_value = Kuiper(unSortedData)
+	doTest("Kuiper test", testStatistics, P_value, 0.05)
+	t.AppendSeparator()
+
+	// 6. Neyman-Barton test for the hypothesis of uniformity
+	//testStatistics, P_value = NeymanBarton(&sortedData)
+	testStatistics, P_value = NeymanBarton(&sortedData)
+	doTest("Neyman-Barton test", testStatistics, P_value, 0.05)
+	t.AppendSeparator()
 
 	var resultColor text.Colors = text.Colors{text.FgHiRed}
 	resultPassFail := "FAIL"
