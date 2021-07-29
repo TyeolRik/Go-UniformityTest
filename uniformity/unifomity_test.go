@@ -22,3 +22,13 @@ func TestDudewiczVanDerMeulen(t *testing.T) {
 	fmt.Println(h)
 	fmt.Println(P)
 }
+
+func TestAppend(t *testing.T) {
+	testCase := []float64{7, 7, 7, 7, 7, 7, 7}
+	x := make([]float64, 2, len(testCase)+2)
+	x[0] = 0
+	x = append(x[1:], testCase...)
+	x[len(x)-1] = 1
+	fmt.Println(len(x))
+	fmt.Println(x)
+}

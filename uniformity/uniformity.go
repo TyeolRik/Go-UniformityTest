@@ -55,10 +55,16 @@ func UniformityTest(unSortedData *[]float64) {
 	t.AppendSeparator()
 
 	// 6. Neyman-Barton test for the hypothesis of uniformity
-	//testStatistics, P_value = NeymanBarton(&sortedData)
 	testStatistics, P_value = NeymanBarton(&sortedData)
 	doTest("Neyman-Barton test", testStatistics, P_value, 0.05)
 	t.AppendSeparator()
+
+	// 7. Greenwood-Quesenberry-Miller test for uniformity
+	testStatistics, P_value = QuesenberryMiller(&sortedData)
+	doTest("Quesenberry–Miller test", testStatistics, P_value, 0.05)
+	t.AppendSeparator()
+
+	// 8. Sarkadi-Kosik test for the hypothesis of uniformity
 
 	var resultColor text.Colors = text.Colors{text.FgHiRed}
 	resultPassFail := "FAIL"
