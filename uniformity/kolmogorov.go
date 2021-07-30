@@ -1,7 +1,6 @@
 package uniformity
 
 import (
-	"fmt"
 	"log"
 	"math"
 )
@@ -32,7 +31,6 @@ func KolmogorovSmirnov(data *[]float64, anotherArg ...int) (testStatistics float
 		d := (*data)[0] - 1.0/(n_float64+1.0)
 		for idx := 1; idx < n; idx++ {
 			temp := (*data)[idx] - (float64(idx)+1.0)/(n_float64+1.0)
-			fmt.Println(idx, temp)
 			if d < temp {
 				d = temp
 			}
