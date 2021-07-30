@@ -69,6 +69,11 @@ func UniformityTest(unSortedData *[]float64) {
 	doTest("Sarkadi-Kosik test", testStatistics, P_value, 0.05)
 	t.AppendSeparator()
 
+	// 9. Sherman test for the hypothesis of uniformity
+	testStatistics, P_value = Sherman(&sortedData, 2000)
+	doTest("Sherman test", testStatistics, P_value, 0.05)
+	t.AppendSeparator()
+
 	var resultColor text.Colors = text.Colors{text.FgHiRed}
 	resultPassFail := "FAIL"
 	if totalPassFail > (testNumber / 2) {
