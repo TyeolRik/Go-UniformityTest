@@ -12,7 +12,7 @@ var sample = []float64{0.1819336, 0.4222107, 0.7173508, 0.06806584, 0.336313, 0.
 
 func TestUniformityTest(t *testing.T) {
 	testCase := (sample)[:10]
-	uniformity.UniformityTest(&testCase)
+	uniformity.UniformityTest(&testCase, "../output/")
 }
 
 func TestDudewiczVanDerMeulen(t *testing.T) {

@@ -16,7 +16,7 @@ var PassFail string = "PASS"
 
 var t table.Writer
 
-func UniformityTest(unSortedData *[]float64) {
+func UniformityTest(unSortedData *[]float64, locationToSaveHistogram string) {
 	sortedData := make([]float64, len(*unSortedData))
 	copy(sortedData, *unSortedData)
 	sort.Float64s(sortedData)
@@ -74,23 +74,28 @@ func UniformityTest(unSortedData *[]float64) {
 	doTest("Sherman test", testStatistics, P_value, 0.05)
 	t.AppendSeparator()
 
+	// 10. Draw Histogram
+	savedLocation := Histogram(&sortedData, locationToSaveHistogram)
+
 	var resultColor text.Colors = text.Colors{text.FgHiRed}
 	resultPassFail := "FAIL"
+	testNumber = testNumber - 1
 	if totalPassFail > (testNumber / 2) {
 		resultPassFail = "PASS"
 		resultColor = text.Colors{text.FgHiGreen}
 	}
 
 	t.SetColumnConfigs([]table.ColumnConfig{
-		{Number: 3, Align: text.AlignRight, AlignHeader: text.AlignCenter, AlignFooter: text.AlignCenter},
+		{Number: 3, Align: text.AlignRight, AlignHeader: text.AlignCenter, AlignFooter: text.AlignRight},
 		{Number: 4, Align: text.AlignRight, AlignHeader: text.AlignCenter, AlignFooter: text.AlignCenter, ColorsFooter: resultColor},
 		{Number: 5, Align: text.AlignCenter, AlignHeader: text.AlignCenter, AlignFooter: text.AlignCenter, ColorsFooter: resultColor},
 	})
 
-	t.AppendFooter(table.Row{"", "", "", "Result", resultPassFail})
+	t.AppendFooter(table.Row{"", "", "Result", fmt.Sprintf("%d / %d", totalPassFail, testNumber), resultPassFail})
 	t.Render()
 
 	t = nil
+	fmt.Println("Histogram is saved at " + savedLocation)
 }
 
 func doTest(testName string, testStatistics float64, P_value float64, significanceLevel float64) {
