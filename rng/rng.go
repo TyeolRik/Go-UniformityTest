@@ -1,12 +1,23 @@
 package rng
 
-import "math/rand"
+import (
+	mathRand "math/rand"
+)
 
 func MathRand(seeds *[]int64) (ret []float64) {
 	ret = make([]float64, len(*seeds))
 	for i := range *seeds {
-		rand.Seed((*seeds)[i])
-		ret[i] = rand.Float64()
+		mathRand.Seed((*seeds)[i])
+		ret[i] = mathRand.Float64()
 	}
 	return
+}
+
+// CSPRNG
+func CryptoRand(howMany int) (ret []float64) {
+	ret = make([]float64, howMany)
+	for i := range ret {
+		ret[i] = GetCryptoRandFloat(0, 1)
+	}
+	return ret
 }
